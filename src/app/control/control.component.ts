@@ -17,6 +17,14 @@ export class ControlComponent implements OnInit {
   getProcesses() {
     this.controlService.getAll().subscribe(resp => {
       console.log(resp)
+      var alertString = "";
+
+      resp.forEach(proc => {
+        console.log(proc)
+        alertString += "Process, pid = " + proc.pid + " command = " + proc.cmd_line[0] + " " + proc.cmd_line[1] + "\n"
+      });
+
+      alert(alertString)
     });
   }
 
