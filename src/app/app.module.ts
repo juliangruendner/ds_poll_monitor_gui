@@ -12,6 +12,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
+import { ControlModule } from './control/control.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { AboutModule } from './about/about.module';
     SharedModule,
     HomeModule,
     AboutModule,
-
+    ControlModule,
+    
     // must be after other modules, otherwise path is not detected
     AppRoutingModule,
   ],
