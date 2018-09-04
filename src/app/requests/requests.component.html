@@ -1,11 +1,34 @@
-<h1>Poll Service Control</h1>
-<div>
-  <span>Poll Status:</span> 
-    <span *ngIf="pollActive" class="uk-label uk-label-success">Running</span>
-    <span *ngIf="pollActive == false" class="uk-label uk-label-danger">Stopped</span>
-</div>
+<h1>Poll Service Request Monitoring</h1>
 <div class="controlButtons">
-  <button class="uk-button uk-button-primary uk-button-small" (click)="startPoll()">start poll service</button>
-  <button class="uk-button uk-button-danger uk-button-small" (click)="stopPoll()">stop poll service</button>
+  <button class="uk-button uk-button-primary uk-button-small" (click)="startShowingRequests()">start showing requests</button>
+  <button class="uk-button uk-button-danger uk-button-small" (click)="stopShowingRequests()">stop showing requests</button>
+  <button class="uk-button uk-button-danger uk-button-small" (click)="toggleRequestOrder()">
+     <span *ngIf="newestFirst">show oldest first</span>
+     <span *ngIf="!newestFirst">show newest first</span>
+  </button>
   <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
 </div>
+
+<div >
+  <table class="uk-table uk-table-divider">
+    <thead>
+        <tr>
+            <th>Request Time</th>
+            <th>Request Line</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let request of requests; let i = index">
+            <td class="req_time" >{{request.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{request.requestLine}}
+                <div class="req_body" hidden id="id_{{i+1}}">
+                  <h5>request body:</h5>
+                  {{request.requestBody}}
+                </div>
+            </td>
+            <button (click)="toggleBody(i+1)" class="req-body-button uk-button uk-button-primary uk-button-small">show body</button>
+        </tr>  
+    </tbody>
+  </table>
+</div>
+
