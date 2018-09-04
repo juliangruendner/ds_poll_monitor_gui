@@ -5,11 +5,13 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 // import { AuthenticationService } from '../core/authentication/authentication.service';
 import { environment } from '../../environments/environment';
 import { Process } from '../models/process.model';
+import {PollStatus} from '../models/pollStatus.model';
 
 const routes = {
   getAll: () => environment.serverUrl + `/control`,
+  getPollActive: environment.serverUrl + '/control?pollStatus=True' ,
   singleById: (id : number) => environment.serverUrl + `/environments/${id}`,
-  base: environment.serverUrl + '/environments'
+  base: environment.serverUrl + '/control'
 };
 
 @Injectable()
@@ -20,6 +22,18 @@ export class ControlService {
 
   getAll(): Observable<Process[]> {
     return this.httpClient.get<Process[]>(routes.getAll());
+  }
+
+  getPollActive(): Observable<PollStatus> {
+    return this.httpClient.get<PollStatus>(routes.getPollActive);
+  }
+
+  startPoll(): Observable<PollStatus>{
+    return this.httpClient.post<PollStatus>(routes.base,"");
+  }
+
+  stopPoll(): Observable<PollStatus>{
+    return this.httpClient.delete<PollStatus>(routes.base);
   }
 
 

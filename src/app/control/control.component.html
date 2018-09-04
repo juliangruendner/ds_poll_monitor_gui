@@ -1,7 +1,11 @@
-<p>
-  control works!
-</p>
+<h1>Poll Service Control</h1>
 <div>
-  <button class="uk-button uk-button-primary uk-button-small" (click)="getProcesses()">get processes</button>
-  <button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">stop poll service</button>
-</div> 
+  <span>Poll Status:</span> 
+    <span *ngIf="pollActive" class="uk-label uk-label-success">Running</span>
+    <span *ngIf="pollActive == false" class="uk-label uk-label-danger">Stopped</span>
+</div>
+<div class="controlButtons">
+  <button class="uk-button uk-button-primary uk-button-small" (click)="startPoll()">start poll service</button>
+  <button class="uk-button uk-button-danger uk-button-small" (click)="stopPoll()">stop poll service</button>
+  <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
+</div>
