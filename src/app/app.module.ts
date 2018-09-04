@@ -13,6 +13,7 @@ import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
 import { ControlModule } from './control/control.module';
 import { ControlService } from './services/control.service';
+import {RequestsModule} from './requests/requests.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ControlService } from './services/control.service';
     HomeModule,
     AboutModule,
     ControlModule,
-    
+    RequestsModule,
+        
     // must be after other modules, otherwise path is not detected
     AppRoutingModule,
   ],

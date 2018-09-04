@@ -14,7 +14,8 @@ export class MenuComponent implements OnInit {
 
   constructor(private router: Router) {
     this.addEntry('Home', '/home', 'desktop');
-    this.addEntry('Control', '/control', 'desktop')
+    this.addEntry('Control', '/control', 'desktop');
+    this.addEntry('Requests', '/requests', 'desktop')
   }
 
   gotoRoute(url: string) {
