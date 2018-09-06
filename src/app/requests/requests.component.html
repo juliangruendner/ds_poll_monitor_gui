@@ -1,34 +1,85 @@
 <h1>Poll Service Request Monitoring</h1>
-<div class="controlButtons">
-  <button class="uk-button uk-button-primary uk-button-small" (click)="startShowingRequests()">start showing requests</button>
-  <button class="uk-button uk-button-danger uk-button-small" (click)="stopShowingRequests()">stop showing requests</button>
-  <button class="uk-button uk-button-danger uk-button-small" (click)="toggleRequestOrder()">
-     <span *ngIf="newestFirst">show oldest first</span>
-     <span *ngIf="!newestFirst">show newest first</span>
-  </button>
-  <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
-</div>
 
-<div >
-  <table class="uk-table uk-table-divider">
-    <thead>
-        <tr>
-            <th>Request Time</th>
-            <th>Request Line</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let request of requests; let i = index">
-            <td class="req_time" >{{request.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>{{request.requestLine}}
-                <div class="req_body" hidden id="id_{{i+1}}">
-                  <h5>request body:</h5>
-                  {{request.requestBody}}
+<ul uk-tab data-uk-tab="{connect:'#my-id'}">
+    <li class="uk-active" ><a href="#">Live Request Stream</a></li>
+    <li><a href="#">Log Search</a></li>
+    <li><a href="#">Log Download</a></li>
+</ul>
+<ul id="my-id" class="uk-switcher uk-margin">
+    <li>
+        <div id="monitor_stream">
+                <div class="controlButtons">
+                <button class="uk-button uk-button-primary uk-button-small" (click)="startShowingRequests()">start polling requests</button>
+                <button class="uk-button uk-button-danger uk-button-small" (click)="stopShowingRequests()">stop polling requests</button>
+                <button class="uk-button uk-button-danger uk-button-small" (click)="toggleRequestOrder()">
+                    <span *ngIf="newestFirst">show oldest first</span>
+                    <span *ngIf="!newestFirst">show newest first</span>
+                </button>
+                <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
                 </div>
-            </td>
-            <button (click)="toggleBody(i+1)" class="req-body-button uk-button uk-button-primary uk-button-small">show body</button>
-        </tr>  
-    </tbody>
-  </table>
-</div>
+            
+                <div >
+                <table class="uk-table uk-table-divider">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Request Line</th>
+                            <th>User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let request of requests; let i = index">
+                            <td class="req_time" >{{request.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{request.req_line}}
+                                <div class="req_body" hidden id="id_{{i+1}}">
+                                <h5>request body:</h5>
+                                {{request.body}}
+                                </div>
+                            </td>
+                            <td>{{request.user}}
+            
+                            </td>
+                            <button (click)="toggleBody(i+1)" class="req-body-button uk-button uk-button-primary uk-button-small">show body</button>
+                        </tr>  
+                    </tbody>
+                </table>
+                </div>
+            </div>
+    </li>
+    <li>
+        <div id="monitor_search">
+                <table class="uk-table uk-table-divider">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Request Line</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let request of requests; let i = index">
+                                <td class="req_time" >{{request.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{request.req_line}}
+                                    <div class="req_body" hidden id="id_{{i+1}}">
+                                    <h5>request body:</h5>
+                                    {{request.body}}
+                                    </div>
+                                </td>
+                                <td>{{request.user}}
+                
+                                </td>
+                                <button (click)="toggleBody(i+1)" class="req-body-button uk-button uk-button-primary uk-button-small">show body</button>
+                            </tr>  
+                        </tbody>
+                    </table>
+        </div>
+    </li>
+    <li>
+            <div id="log_download">
+                  
+            </div>
+        </li>
+</ul>
+
+
 

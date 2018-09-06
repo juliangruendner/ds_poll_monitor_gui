@@ -14,6 +14,7 @@ import { AboutModule } from './about/about.module';
 import { ControlModule } from './control/control.module';
 import { ControlService } from './services/control.service';
 import {RequestsModule} from './requests/requests.module';
+import { RequestsService } from './services/requests.service';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import {RequestsModule} from './requests/requests.module';
   ],
   declarations: [AppComponent],
   providers: [
-    ControlService
+    ControlService,
+    RequestsService
   ],
   bootstrap: [AppComponent]
 })

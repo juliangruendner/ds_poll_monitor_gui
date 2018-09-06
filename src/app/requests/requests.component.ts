@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ControlService } from '../services/control.service';
+import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
 import {Request} from '../models/request.model';
+import {RequestsService} from '../services/requests.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-requests',
@@ -9,53 +10,65 @@ import {Request} from '../models/request.model';
 })
 export class RequestsComponent implements OnInit {
 
-  pollActive: boolean
   requests: Array<Request>
   newestFirst: boolean
+  pollRequests: any
+  lastRequestTime: string
+  cutoff: number
 
-  constructor(private controlService: ControlService) { 
+  constructor(private requestsService: RequestsService) { 
     this.requests = [];
     this.newestFirst = true;
   }
 
   ngOnInit() {
 
-    var req1 = new Request();
-    var req2 = new Request();
-
-    req1.time = 1238323623006
-    req2.time = 1288323223006;
-    req1.requestLine = " REQUEST Line of first REQUEST this request line is really really really really really really really really really really really really long";
-    req2.requestLine = " REQUEST Line of second REQUEST";
-    req2.requestBody = "request 2 body LOREM IPSUM  LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM LOREM IPSUM";
-
-    this.requests.push(req1);
-    this.requests.push(req2);
-
     this.requests.sort(function(a,b){ if (a.time > b.time) return -1; else return 1;})
     this.newestFirst = true;
     var tmpList = this.requests;
     this.requests = tmpList;
+    this.cutoff = 5;
   }
 
   startShowingRequests(){
-    this.controlService.startPoll().subscribe(resp => {
-      console.log(resp);
-      this.pollActive = resp.status
-    });
+
+   this.lastRequestTime = moment().format('YYYYMMDDhhmmss');
+
+    if (this.requests.length > 0){
+      var lastRequestTime = this.requests[0].time;
+      lastRequestTime = lastRequestTime.replace(" ", "");
+      lastRequestTime = lastRequestTime.replace(/:/g, "");
+      lastRequestTime = lastRequestTime.replace(/-/g, "");
+      this.lastRequestTime = String(Number(lastRequestTime) + 1) ;
+    }
+
+    
+    this.requestsService.getByTimestamp(this.lastRequestTime).subscribe(resp => {
+      resp.sort(function(a,b){ if (a.time > b.time) return -1; else return 1;})
+
+      if(this.requests.length <= 0 ){
+        var tmp = resp.concat(this.requests)
+        this.newestFirst = true;
+        this.requests = tmp
+      } else if(resp[0].time != this.requests[0].time){
+        var tmp = resp.concat(this.requests)
+        this.newestFirst = true;
+        this.requests = tmp
+        if (this.requests.length > this.cutoff){
+          this.requests = this.requests.slice(0, this.cutoff)
+        }
+      }
+      this.pollRequests = setTimeout(()=>{this.startShowingRequests()}, 1000)
+
+    }); 
 
   }
 
   stopShowingRequests(){
-    this.controlService.stopPoll().subscribe(resp => {
-      console.log(resp);
-      this.pollActive = resp.status
-    });
+    clearTimeout(this.pollRequests)
   }
 
   toggleBody(id: string){
-
-    console.log(id)
     let elm = <HTMLElement>document.querySelector("#id_" + id);
     elm.hidden =  ! elm.hidden;
   }

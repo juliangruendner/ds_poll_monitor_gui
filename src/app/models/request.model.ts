@@ -1,6 +1,7 @@
 
 export class Request {
-    time: Date
-    requestLine: string
-    requestBody: string
+    time: string
+    req_line: string
+    user: string
+    body: string
 }
