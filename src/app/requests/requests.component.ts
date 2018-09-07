@@ -12,9 +12,17 @@ export class RequestsComponent implements OnInit {
 
   requests: Array<Request>
   newestFirst: boolean
+  requestPollingActive: boolean = false
   pollRequests: any
   lastRequestTime: string
   cutoff: number
+
+  timeFrom: string
+  timeTo: string
+
+  timeFromValid: boolean = true
+  timeToValid: boolean = true
+  
 
   constructor(private requestsService: RequestsService) { 
     this.requests = [];
@@ -28,9 +36,11 @@ export class RequestsComponent implements OnInit {
     var tmpList = this.requests;
     this.requests = tmpList;
     this.cutoff = 5;
+    this.timeFrom = this.timeTo = ""
+
   }
 
-  startShowingRequests(){
+  pollRequestsFunc(){
 
    this.lastRequestTime = moment().format('YYYYMMDDhhmmss');
 
@@ -50,7 +60,7 @@ export class RequestsComponent implements OnInit {
         var tmp = resp.concat(this.requests)
         this.newestFirst = true;
         this.requests = tmp
-      } else if(resp[0].time != this.requests[0].time){
+      } else if(resp.length > 0 && resp[0].time != this.requests[0].time){
         var tmp = resp.concat(this.requests)
         this.newestFirst = true;
         this.requests = tmp
@@ -58,14 +68,25 @@ export class RequestsComponent implements OnInit {
           this.requests = this.requests.slice(0, this.cutoff)
         }
       }
-      this.pollRequests = setTimeout(()=>{this.startShowingRequests()}, 1000)
+      this.pollRequests = setTimeout(()=>{this.pollRequestsFunc()}, 1000)
 
     }); 
 
   }
 
+  startShowingRequests(){
+
+   if(this.requestPollingActive == true){
+     return;
+   }
+
+   this.requestPollingActive = true;
+   this.pollRequestsFunc()
+  }
+
   stopShowingRequests(){
     clearTimeout(this.pollRequests)
+    this.requestPollingActive = false;
   }
 
   toggleBody(id: string){
@@ -85,6 +106,26 @@ export class RequestsComponent implements OnInit {
 
     var tmpList = this.requests;
     this.requests = tmpList;
+    
+  }
+
+
+  downloadLog(){
+
+    this.timeFromValid = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(this.timeFrom)
+    this.timeToValid = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(this.timeTo)
+
+    if( ! this.timeFromValid ||  ! this.timeToValid){
+      alert("date format incorrect, has to be YYYY-MM-DD")
+      return;
+    }
+
+    if(this.timeFrom >= this.timeTo){
+      alert("ensure from date is smaller than to date")
+      return;
+    }
+
+    this.requestsService.downloadLogs(this.timeFrom.replace(/-/g, ""), this.timeTo.replace(/-/g, ""));
     
   }
 

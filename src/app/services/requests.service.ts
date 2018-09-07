@@ -10,7 +10,8 @@ import { Request } from '../models/request.model';
 const routes = {
   getAll: () => environment.serverUrl + `/logging`,
   base: environment.serverUrl + '/logging',
-  getByTimestamp: (timestamp : string) => environment.serverUrl + `/logging?timestamp=${timestamp}`
+  getByTimestamp: (timestamp : string) => environment.serverUrl + `/logging?timestamp=${timestamp}`,
+  downloadLogs: (timeFrom: string, timeTo: string) => environment.serverUrl + `/logging?timestamp=${timeFrom}&timestampEnd=${timeTo}&download=True`
 };
 
 @Injectable()
@@ -25,6 +26,10 @@ export class RequestsService {
 
   getByTimestamp(timestamp: string): Observable<Request[]> {
     return this.httpClient.get<Request[]>(routes.getByTimestamp(timestamp));
+  }
+
+  downloadLogs(timeFrom: string, timeTo: string): void {
+    document.location.href = routes.downloadLogs(timeFrom, timeTo);
   }
 
 /*

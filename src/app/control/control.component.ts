@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlService } from '../services/control.service';
+declare var UIkit:any;
+export const uikit = UIkit;
 
 @Component({
   selector: 'app-control',
@@ -9,6 +11,7 @@ import { ControlService } from '../services/control.service';
 export class ControlComponent implements OnInit {
 
   pollActive: boolean
+  error_activating_message: string
 
   constructor(private controlService: ControlService) { }
 
@@ -38,8 +41,17 @@ export class ControlComponent implements OnInit {
 
   startPoll(){
     this.controlService.startPoll().subscribe(resp => {
-      console.log(resp);
       this.pollActive = resp.status
+
+      console.log(this.pollActive)
+      if(! this.pollActive){
+        uikit.notification({
+          message: 'Poll could not be activated',
+          status: 'danger',
+          pos: 'top-center',
+          timeout: 1000
+      });
+      }
     });
 
   }

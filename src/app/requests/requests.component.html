@@ -11,10 +11,10 @@
                 <div class="controlButtons">
                 <button class="uk-button uk-button-primary uk-button-small" (click)="startShowingRequests()">start polling requests</button>
                 <button class="uk-button uk-button-danger uk-button-small" (click)="stopShowingRequests()">stop polling requests</button>
-                <button class="uk-button uk-button-danger uk-button-small" (click)="toggleRequestOrder()">
+                <!--button class="uk-button uk-button-danger uk-button-small" (click)="toggleRequestOrder()">
                     <span *ngIf="newestFirst">show oldest first</span>
                     <span *ngIf="!newestFirst">show newest first</span>
-                </button>
+                </button-->
                 <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
                 </div>
             
@@ -48,7 +48,8 @@
     </li>
     <li>
         <div id="monitor_search">
-                <table class="uk-table uk-table-divider">
+                <h3>TO BE IMPLEMENTED</h3>
+                <!--table class="uk-table uk-table-divider">
                         <thead>
                             <tr>
                                 <th>Time</th>
@@ -71,12 +72,28 @@
                                 <button (click)="toggleBody(i+1)" class="req-body-button uk-button uk-button-primary uk-button-small">show body</button>
                             </tr>  
                         </tbody>
-                    </table>
+                    </table-->
         </div>
     </li>
     <li>
             <div id="log_download">
-                  
+                <form class="uk-form-horizontal uk-margin-large">
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-horizontal-text">from Date</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" placeholder="2000-01-01"type="text" id="form-horizontal-text" required name="timeFrom" [(ngModel)]="timeFrom">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                            <label class="uk-form-label" for="form-horizontal-text2">to Date</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" placeholder="2030-12-31" type="text" id="form-horizontal-text2" required name="timeTo" [(ngModel)]="timeTo">
+                            </div>
+                        </div>
+
+                    <button class="uk-button uk-button-primary" type="submit" (click)="downloadLog()" >Download Log</button>
+                </form>
             </div>
         </li>
 </ul>
