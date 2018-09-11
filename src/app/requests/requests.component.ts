@@ -42,8 +42,8 @@ export class RequestsComponent implements OnInit {
 
   pollRequestsFunc(){
 
-   this.lastRequestTime = moment().format('YYYYMMDDhhmmss');
-
+   this.lastRequestTime = moment().format('YYYYMMDDHHmmss');
+   
     if (this.requests.length > 0){
       var lastRequestTime = this.requests[0].time;
       lastRequestTime = lastRequestTime.replace(" ", "");
@@ -51,7 +51,8 @@ export class RequestsComponent implements OnInit {
       lastRequestTime = lastRequestTime.replace(/-/g, "");
       this.lastRequestTime = String(Number(lastRequestTime) + 1) ;
     }
-
+    
+    
     
     this.requestsService.getByTimestamp(this.lastRequestTime).subscribe(resp => {
       resp.sort(function(a,b){ if (a.time > b.time) return -1; else return 1;})

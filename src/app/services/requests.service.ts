@@ -32,21 +32,4 @@ export class RequestsService {
     document.location.href = routes.downloadLogs(timeFrom, timeTo);
   }
 
-/*
-  getSingleById(id: number): Observable<Environment> {
-    return this.httpClient.get<Environment>(routes.singleById(id));
-  }
-
-  putSingle(id: number, env: Environment): Observable<Environment> {
-    return this.httpClient.put<Environment>(routes.singleById(id), env);
-  }
-
-  post(env: Environment): Observable<Environment> {
-    return this.httpClient.post<Environment>(routes.base, env);
-  }
-
-  delete(id: number): Observable<ID> {
-    return this.httpClient.delete<ID>(routes.singleById(id));
-  }
-*/
 }
