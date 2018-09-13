@@ -41,8 +41,6 @@ export class RequestsComponent implements OnInit {
   }
 
   pollRequestsFunc(){
-
-   this.lastRequestTime = moment().format('YYYYMMDDHHmmss');
    
     if (this.requests.length > 0){
       var lastRequestTime = this.requests[0].time;
@@ -81,6 +79,7 @@ export class RequestsComponent implements OnInit {
      return;
    }
 
+   this.lastRequestTime = moment().format('YYYYMMDDHHmmss');
    this.requestPollingActive = true;
    this.pollRequestsFunc()
   }
