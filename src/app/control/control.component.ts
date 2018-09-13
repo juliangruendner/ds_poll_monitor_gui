@@ -12,6 +12,9 @@ export class ControlComponent implements OnInit {
 
   pollActive: boolean
   error_activating_message: string
+  qServer: string = ""
+  opalServer: string = ""
+  startingPoll: boolean = false
 
   constructor(private controlService: ControlService) { }
 
@@ -22,6 +25,15 @@ export class ControlComponent implements OnInit {
       console.log("isactive = " + resp.status);
       this.pollActive = resp.status;
     });
+
+    if (typeof(Storage) !== "undefined") {
+      // Code for localStorage/sessionStorage.
+      // Store value
+      this.qServer = localStorage.getItem("qServer") != null ? localStorage.getItem("qServer") : "";
+      this.opalServer = localStorage.getItem("opalServer") != null ? localStorage.getItem("opalServer") : "";
+      console.log(this.qServer)
+
+    }
   }
 
 
@@ -40,10 +52,20 @@ export class ControlComponent implements OnInit {
   }
 
   startPoll(){
-    this.controlService.startPoll().subscribe(resp => {
+
+    this.startingPoll = true;
+
+    if (typeof(Storage) !== "undefined") {
+      // Code for localStorage/sessionStorage.
+      // Store value
+      localStorage.setItem("qServer", this.qServer);
+      localStorage.setItem("opalServer", this.opalServer);
+    }
+
+    this.controlService.startPoll(this.qServer, this.opalServer).subscribe(resp => {
       this.pollActive = resp.status
 
-      console.log(this.pollActive)
+
       if(! this.pollActive){
         uikit.notification({
           message: 'Poll could not be activated',
@@ -52,6 +74,7 @@ export class ControlComponent implements OnInit {
           timeout: 1000
       });
       }
+      this.startingPoll = false;
     });
 
   }

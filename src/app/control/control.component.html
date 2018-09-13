@@ -4,8 +4,29 @@
     <span *ngIf="pollActive" class="uk-label uk-label-success">Running</span>
     <span *ngIf="pollActive == false" class="uk-label uk-label-danger">Stopped</span>
 </div>
-<div class="controlButtons">
-  <button class="uk-button uk-button-primary uk-button-small" (click)="startPoll()">start poll service</button>
-  <button class="uk-button uk-button-danger uk-button-small" (click)="stopPoll()">stop poll service</button>
-  <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
+<div>
+  Please insert your queue server host and port and your opal host and port - if left empty the default values will be used:
+  Queue Server: queue_server:8001
+  Opal Server: datashield_opal:8443
 </div>
+<form class="uk-form-horizontal uk-margin-large">
+  <div class="uk-margin">
+      <label class="uk-form-label" for="form-horizontal-text">Queue Server host and port</label>
+      <div class="uk-form-controls">
+          <input class="uk-input" placeholder="queuehost:80" type="text" id="form-horizontal-text" required name="qServer" [(ngModel)]="qServer">
+      </div>
+  </div>
+  <div class="uk-margin">
+          <label class="uk-form-label" for="form-horizontal-text2">Opal Server host and port</label>
+          <div class="uk-form-controls">
+              <input class="uk-input" placeholder="opalhost:80" type="text" id="form-horizontal-text2" required name="opalServer" [(ngModel)]="opalServer">
+          </div>
+      </div>
+
+  <div *ngIf="startingPoll"><span  uk-spinner></span>  STARTING POLL SERVICE</div>
+  <div class="controlButtons">
+    <button class="uk-button uk-button-primary uk-button-small" (click)="startPoll()">start poll service</button>
+    <button class="uk-button uk-button-danger uk-button-small" (click)="stopPoll()">stop poll service</button>
+    <!--button class="uk-button uk-button-danger uk-button-small" (click)="getProcesses()">list all python processes in console</button-->
+  </div>
+</form>

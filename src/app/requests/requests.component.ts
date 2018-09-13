@@ -2,6 +2,8 @@ import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
 import {Request} from '../models/request.model';
 import {RequestsService} from '../services/requests.service';
 import * as moment from 'moment';
+declare var UIkit:any;
+export const uikit = UIkit;
 
 @Component({
   selector: 'app-requests',
@@ -116,12 +118,23 @@ export class RequestsComponent implements OnInit {
     this.timeToValid = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/.test(this.timeTo)
 
     if( ! this.timeFromValid ||  ! this.timeToValid){
-      alert("date format incorrect, has to be YYYY-MM-DD")
+      uikit.notification({
+        message: 'date format incorrect, has to be YYYY-MM-DD',
+        status: 'danger',
+        pos: 'top-center',
+        timeout: 3000
+    });
       return;
     }
 
     if(this.timeFrom >= this.timeTo){
-      alert("ensure from date is smaller than to date")
+      uikit.notification({
+        message: 'Please ensure "from date" is smaller than "to date"',
+        status: 'danger',
+        pos: 'top-center',
+        timeout: 3000
+    });
+      
       return;
     }
 

@@ -11,6 +11,7 @@ const routes = {
   getAll: () => environment.serverUrl + `/control`,
   getPollActive: environment.serverUrl + '/control?pollStatus=True' ,
   singleById: (id : number) => environment.serverUrl + `/environments/${id}`,
+  startPoll: (qServer : string, opalServer : string) => environment.serverUrl + `/control` + qServer + opalServer,
   base: environment.serverUrl + '/control'
 };
 
@@ -28,8 +29,17 @@ export class ControlService {
     return this.httpClient.get<PollStatus>(routes.getPollActive);
   }
 
-  startPoll(): Observable<PollStatus>{
-    return this.httpClient.post<PollStatus>(routes.base,"");
+  startPoll(qServer : string, opalServer : string): Observable<PollStatus>{
+    if(qServer != ""){
+      qServer = "?queueServer=" + qServer;
+    }
+
+    if(opalServer != ""){
+        var prefix = qServer == "" ? "?" : "&";
+        opalServer = prefix + "opalServer=" + opalServer;
+    }
+
+    return this.httpClient.post<PollStatus>(routes.startPoll(qServer, opalServer),"");
   }
 
   stopPoll(): Observable<PollStatus>{
