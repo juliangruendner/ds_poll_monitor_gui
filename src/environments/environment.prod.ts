@@ -4,7 +4,7 @@ import * as env from './.env.json';
 export const environment = {
   production: true,
   version: '1.0',
-  serverUrl: 'http://141.67.22.10:5000',
+  serverUrl: 'http://142.93.101.142:5000',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',
