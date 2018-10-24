@@ -12,6 +12,7 @@ const routes = {
   getPollActive: environment.serverUrl + '/control?pollStatus=True' ,
   singleById: (id : number) => environment.serverUrl + `/environments/${id}`,
   startPoll: (qServer : string, opalServer : string) => environment.serverUrl + `/control` + qServer + opalServer,
+  resetQueue: (qServer : string) => environment.serverUrl + `/control?queueServer=` + qServer + '&resetQueue=True',
   base: environment.serverUrl + '/control'
 };
 
@@ -46,6 +47,9 @@ export class ControlService {
     return this.httpClient.delete<PollStatus>(routes.base);
   }
 
+  resetQueue(qServer : string): Observable<PollStatus>{
+    return this.httpClient.delete<PollStatus>(routes.resetQueue(qServer));
+  }
 
 /*
   getSingleById(id: number): Observable<Environment> {

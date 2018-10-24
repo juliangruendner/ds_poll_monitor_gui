@@ -86,6 +86,12 @@ export class ControlComponent implements OnInit {
     });
   }
 
+  resetQueue(){
+    this.controlService.resetQueue(this.qServer).subscribe(resp => {
+    });
+
+  }
+
 }
 
 
