@@ -20,7 +20,7 @@ export class ControlComponent implements OnInit {
 
   ngOnInit() {
 
-    this.pollActive = true;
+    this.pollActive = false;
     this.controlService.getPollActive().subscribe(resp => {
       console.log("isactive = " + resp.status);
       this.pollActive = resp.status;
