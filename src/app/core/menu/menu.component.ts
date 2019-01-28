@@ -14,7 +14,6 @@ export class MenuComponent implements OnInit {
 
   constructor(private router: Router) {
     this.addEntry('Home', '/home', 'home');
-    this.addEntry('Control', '/control', 'cog');
     this.addEntry('Requests', '/requests', 'file')
   }
 
